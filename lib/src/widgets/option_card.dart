@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class OptionCard extends StatelessWidget {
   const OptionCard({
     required this.icon,
@@ -12,15 +13,22 @@ class OptionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(onTap: onClick,
+    return GestureDetector(
+      onTap: onClick,
       child: Card(
         child: Padding(
-          padding:const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               icon,
-              Text(label),
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ],
           ),
         ),

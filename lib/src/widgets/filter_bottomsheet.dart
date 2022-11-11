@@ -1,7 +1,9 @@
 import 'package:countries_app/src/model/continent.dart';
 import 'package:countries_app/src/model/time_zone.dart';
+import 'package:countries_app/src/provider/theme_provider.dart';
 import 'package:countries_app/src/shared/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../model/filter_response.dart';
 
@@ -41,7 +43,7 @@ class _FilterBottomsheetState extends State<FilterBottomsheet> {
     final screenSize = MediaQuery.of(context).size;
     final filterVar = selectedContinent;
     filterVar.addAll(selectedTimeZone);
-
+    final textTheme = Theme.of(context).textTheme;
     return Stack(
       children: [
         Container(
@@ -52,7 +54,10 @@ class _FilterBottomsheetState extends State<FilterBottomsheet> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text("Filter"),
+                    Text(
+                      "Filter",
+                      style: textTheme.labelLarge,
+                    ),
                     IconButton(
                       onPressed: () => Navigator.pop(context),
                       icon: Container(
@@ -76,7 +81,10 @@ class _FilterBottomsheetState extends State<FilterBottomsheet> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text("Continent"),
+                    Text(
+                      "Continent",
+                      style: textTheme.labelLarge,
+                    ),
                     IconButton(
                       onPressed: () {
                         setState(() {
@@ -102,13 +110,12 @@ class _FilterBottomsheetState extends State<FilterBottomsheet> {
                         children: [
                           Text(
                             continents[index].text,
+                            style: textTheme.titleMedium,
                           ),
                           Checkbox(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(4),
                             ),
-                            fillColor: const MaterialStatePropertyAll(
-                                AppColors.grayWarm),
                             value: continents[index].isSelected,
                             onChanged: (value) => setState(() {
                               continents[index].isSelected = value!;
@@ -127,7 +134,10 @@ class _FilterBottomsheetState extends State<FilterBottomsheet> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text("Time Zone"),
+                    Text(
+                      "Time Zone",
+                      style: textTheme.labelLarge,
+                    ),
                     IconButton(
                       onPressed: () {
                         setState(() {
@@ -153,13 +163,12 @@ class _FilterBottomsheetState extends State<FilterBottomsheet> {
                         children: [
                           Text(
                             timeZones[index].text,
+                            style: textTheme.titleMedium,
                           ),
                           Checkbox(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(4),
                             ),
-                            fillColor: const MaterialStatePropertyAll(
-                                AppColors.grayWarm),
                             value: timeZones[index].isSelected,
                             onChanged: (value) => setState(() {
                               timeZones[index].isSelected = value!;
@@ -181,64 +190,102 @@ class _FilterBottomsheetState extends State<FilterBottomsheet> {
         ),
         Positioned(
           bottom: screenSize.height * 0.04,
-          left: 24,
+          left: 3,
+          right: 24,
           child: Visibility(
             visible: filterOption == FilterOption.continent ||
                 filterOption == FilterOption.timeZone,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      fixedSize: Size(screenSize.width * 0.22, 48),
-                      side: const BorderSide(color: Colors.black38),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+            child: Consumer(builder: (context, ref, child) {
+              return Container(
+                color:
+                    ref.watch(themeProvider.notifier).state == ThemeMode.light
+                        ? Colors.white
+                        : Colors.black,
+                padding: const EdgeInsets.only(left: 24),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: Size(screenSize.width * 0.2, 48),
+                          side: BorderSide(
+                              color: ref.watch(themeProvider) == ThemeMode.light
+                                  ? Colors.black
+                                  : Colors.white),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          backgroundColor:
+                              ref.watch(themeProvider) == ThemeMode.light
+                                  ? Colors.white
+                                  : Colors.black),
+                      onPressed: () {
+                        setState(() {
+                          selectedContinent = {};
+                          selectedTimeZone = {};
+                          continents = continents
+                              .map<Continent>(
+                                  (e) => e.copyWith(isSelected: false))
+                              .toList();
+                          timeZones = timeZones
+                              .map((e) => e.copyWith(isSelected: false))
+                              .toList();
+                        });
+                      },
+                      child: Text(
+                        "Reset",
+                        style: TextStyle(
+                          color: ref.watch(themeProvider) == ThemeMode.light
+                              ? Colors.black
+                              : Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w300,
+                        ),
                       ),
-                      backgroundColor: Colors.transparent),
-                  onPressed: () {
-                    setState(() {
-                      selectedContinent = {};
-                      selectedTimeZone = {};
-                      continents = continents
-                          .map<Continent>((e) => e.copyWith(isSelected: false))
-                          .toList();
-                      timeZones = timeZones
-                          .map((e) => e.copyWith(isSelected: false))
-                          .toList();
-                    });
-                  },
-                  child: const Text("Reset"),
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    fixedSize: Size(screenSize.width * 0.55, 48),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
                     ),
-                  ),
-                  onPressed: () => Navigator.pop<Set<String>>(
-                    context,
-                    filterVar,
-                  ),
-                  child: const Text("Show results"),
-                )
-              ],
-            ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size(screenSize.width * 0.55, 48),
+                        backgroundColor: AppColors.periodColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      onPressed: () => Navigator.pop<Set<String>>(
+                        context,
+                        filterVar,
+                      ),
+                      child: const Text(
+                        "Show results",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }),
           ),
         ),
-        Positioned(
-          bottom: 4,
-          left: screenSize.width * 0.32,
-          child: Container(
-            height: 4,
-            width: screenSize.width * 0.4,
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(2),
+        Consumer(builder: (context, ref, child) {
+          return Positioned(
+            bottom: 4,
+            left: screenSize.width * 0.32,
+            child: Container(
+              height: 4,
+              width: screenSize.width * 0.4,
+              decoration: BoxDecoration(
+                color: ref.watch(themeProvider) == ThemeMode.light
+                    ? Colors.black
+                    : Colors.white,
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
-          ),
-        )
+          );
+        })
       ],
     );
   }
