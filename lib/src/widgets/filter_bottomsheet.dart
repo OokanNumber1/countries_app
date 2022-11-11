@@ -1,11 +1,12 @@
 import 'package:countries_app/src/model/continent.dart';
 import 'package:countries_app/src/model/time_zone.dart';
-import 'package:countries_app/src/provider/theme_provider.dart';
+
 import 'package:countries_app/src/shared/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../model/filter_response.dart';
+import '../shared/styles.dart';
 
 class FilterBottomsheet extends StatefulWidget {
   const FilterBottomsheet({super.key});
@@ -225,10 +226,10 @@ class _FilterBottomsheetState extends State<FilterBottomsheet> {
                           selectedTimeZone = {};
                           continents = continents
                               .map<Continent>(
-                                  (e) => e.copyWith(isSelected: false))
+                                  (e) => e.copyWith(isSelected: false),)
                               .toList();
                           timeZones = timeZones
-                              .map((e) => e.copyWith(isSelected: false))
+                              .map((e) => e.copyWith(isSelected: false),)
                               .toList();
                         });
                       },

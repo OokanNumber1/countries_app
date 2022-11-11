@@ -7,21 +7,11 @@ class Country {
     required this.continent,
     required this.capital,
     required this.officialLanguage,
-    /*
-    required this.motto,
-    required this.ethnicGroup,
-    required this.religion,
-    required this.government,
-
-    
-    required this.gdp,*/
-
     required this.currency,
     required this.independence,
     required this.area,
     required this.timezone,
     required this.dateFormat,
-    //required this.diallingCode,
     required this.flag,
     required this.drivingSide,
     required this.borders,
@@ -43,20 +33,8 @@ class Country {
   final num area;
   final String timezone;
   final String dateFormat;
-  //final String diallingCode;
   final String drivingSide;
   final List borders;
-
-/*
- 
-  
-  final num gdp;
-
-  final String ethnicGroup;
-  final String motto;
-  final String religion;
-  final String government;
- */
 
   factory Country.fromMap(Map<String, dynamic> map) {
     return Country(
@@ -76,13 +54,6 @@ class Country {
       dateFormat: map['dateFormat'] ?? 'dd/mm/yyyy',
       borders: map["borders"] ?? [],
       currency: map['currencies'] ?? {},
-/*
-      motto: map['motto'] ?? '',
-      ethnicGroup: map['ethnicGroup'] ?? '',
-      religion: map['religion'] ?? '',
-      government: map['government'] ?? '',
-      gdp: map['gdp'] ?? '',
-      */
     );
   }
 

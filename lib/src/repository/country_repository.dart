@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:countries_app/src/shared/exception.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

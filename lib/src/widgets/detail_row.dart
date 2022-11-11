@@ -1,5 +1,3 @@
-import 'package:countries_app/src/shared/colors.dart';
-import 'package:countries_app/src/views/home_view.dart';
 import 'package:flutter/material.dart';
 
 class Detail {

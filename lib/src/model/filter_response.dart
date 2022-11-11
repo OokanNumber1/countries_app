@@ -1,7 +1,6 @@
-
 enum FilterOption { none, continent, timeZone }
-class FilterResponse {
 
+class FilterResponse {
   final List<String> flags;
   final FilterOption option;
   FilterResponse({

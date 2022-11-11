@@ -1,11 +1,13 @@
-import 'package:countries_app/src/shared/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:countries_app/src/shared/colors.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 ThemeData get lightTheme => ThemeData(
       checkboxTheme: const CheckboxThemeData(
         fillColor: MaterialStatePropertyAll(AppColors.grayWarm),
       ),
       appBarTheme: const AppBarTheme(
+        elevation: 0,
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         titleTextStyle: TextStyle(
@@ -48,15 +50,18 @@ ThemeData get lightTheme => ThemeData(
         ),
       ),
     );
+
 ThemeData get darkTheme => ThemeData(
       bottomSheetTheme:
           const BottomSheetThemeData(backgroundColor: Colors.black),
       checkboxTheme: const CheckboxThemeData(
-          checkColor: MaterialStatePropertyAll(Colors.black),
-          fillColor: MaterialStatePropertyAll(AppColors.gray200)),
+        checkColor: MaterialStatePropertyAll(Colors.black),
+        fillColor: MaterialStatePropertyAll(AppColors.gray200),
+      ),
       brightness: Brightness.dark,
       appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.black,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
         iconTheme: IconThemeData(color: Colors.white),
         titleTextStyle: TextStyle(
           fontSize: 20,
@@ -96,3 +101,5 @@ ThemeData get darkTheme => ThemeData(
         ),
       ),
     );
+
+final themeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.light);
